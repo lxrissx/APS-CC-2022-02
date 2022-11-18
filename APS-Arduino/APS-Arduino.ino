@@ -1,8 +1,8 @@
 const int pinoSensor1 = 2 /* Esquerda */, pinoSensor2 = 3 /* Direita */, led=1;
-// MOTOR B
-const int ME1 = 7, ME2 = 6;
 //MOTOR A
 const int MD1 = 5, MD2 = 4;
+// MOTOR B
+const int ME1 = 7, ME2 = 6;
 const int s0 = 11, s1 = 12, s2 = 9, s3 = 10, outRGB = 8;  // RGB
 int red = 0, green = 0, blue = 0, lastColor = 1, amarelo = 0; //Variaveis cores
 
@@ -39,20 +39,20 @@ void loop() {
 
   if(amarelo == 1){
     digitalWrite(led, HIGH);
-    delay(1000);
+    delay(300);
     digitalWrite(led, LOW);
-    delay(1000);
+    delay(200);
     digitalWrite(led, HIGH);
-    delay(1000);
+    delay(300);
     digitalWrite(led, LOW);
     amarelo = 0;
   }
 
   if(lastColor == 1){
-    analogWrite(MD1, 0);
-    analogWrite(ME1, 0);
-    analogWrite(MD2, 0);
-    analogWrite(ME2, 0);
+    digitalWrite(MD1, 0);
+    digitalWrite(ME1, 0);
+    digitalWrite(MD2, 0);
+    digitalWrite(ME2, 0);
 
   }else if (lastColor == 2){
     andar();
@@ -81,36 +81,47 @@ void detectaCor(){
 
 void andar(){
 
-  //Em cima da linha branca, ande
-  if (digitalRead(pinoSensor1) == LOW && digitalRead(pinoSensor2) == LOW) {
-    analogWrite(MD1, 100);
-    analogWrite(ME1, 100);
-    analogWrite(MD2, 0);
-    analogWrite(ME2, 0);
+  //Os dois sensores veem preto, ande
+  if (digitalRead(pinoSensor1) == HIGH && digitalRead(pinoSensor2) == HIGH) {
+    digitalWrite(MD1, HIGH);
+    digitalWrite(ME1, HIGH);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
     delay(80);
 
   //Sensor esquerdo ve branco, sensor direito ve preto
   } else if (digitalRead(pinoSensor1) == LOW && digitalRead(pinoSensor2) == HIGH) {
-    analogWrite(MD1, 100);
-    analogWrite(ME1, 0);
-    analogWrite(MD2, 0);
-    analogWrite(ME2, 0);
-    delay(80);
+    digitalWrite(MD1, HIGH);
+    digitalWrite(ME1, LOW);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
+    delay(100);
+    digitalWrite(MD1, LOW);
+    digitalWrite(ME1, LOW);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
+    delay(100);
 
   //Sensor direito ve branco, sensor esquerdo ve preto
   } else if (digitalRead(pinoSensor1) == HIGH && digitalRead(pinoSensor2) == LOW) {
-    analogWrite(MD1, 0);
-    analogWrite(ME1, 100);
-    analogWrite(MD2, 0);
-    analogWrite(ME2, 0);
-    delay(80);
+    digitalWrite(MD1, LOW);
+    digitalWrite(ME1, HIGH);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
+    delay(100);
+    digitalWrite(MD1, LOW);
+    digitalWrite(ME1, LOW);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
+    delay(100);
 
-  //Os dois sensores veem preto, voltar para procurar a linha    
+
+  //Os dois sensores veem branco, escolher um lado    
   } else {
-    analogWrite(MD1, 0);
-    analogWrite(ME1, 0);
-    analogWrite(MD2, 100);
-    analogWrite(ME2, 100);
+    digitalWrite(MD1, LOW);
+    digitalWrite(ME1, HIGH);
+    digitalWrite(MD2, LOW);
+    digitalWrite(ME2, LOW);
     delay(80);
   }
 }
